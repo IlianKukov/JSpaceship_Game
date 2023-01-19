@@ -187,6 +187,11 @@ public class Game {
 			finished = true;
 		}
 
+		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+			//finished = true;
+		}
+
+
 		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
 			if (heroEntity.getX() + heroEntity.getWidth() + 10 < Display
 					.getDisplayMode().getWidth()) {
@@ -222,6 +227,7 @@ public class Game {
 			if (heroEntity.getY() + heroEntity.getHeight() < Display
 					.getDisplayMode().getHeight()) {
 				heroEntity.setY(heroEntity.getY() + 10);
+
 			}
 		}
 
@@ -389,7 +395,7 @@ public class Game {
 
 			heroEntity.draw();
 			font.drawString(10, 10, "Score " + treasuresCollected, Color.white);
-			//font.drawString(SCREEN_SIZE_WIDTH-335, 10, "Lives remaining ", Color.white);
+			font.drawString(SCREEN_SIZE_WIDTH-335, 10, "Lives remaining " + livesRemaining, Color.white);
 		}else {
 
 			if (soundplay){
@@ -424,6 +430,9 @@ public class Game {
 			donutEntity.setVisible(false);
 			entities.remove(donutEntity);
 			treasuresCollected = treasuresCollected + 100;
+			if (treasuresCollected%1000==0 && livesRemaining<3){
+				livesRemaining++;
+			}
 			sound("sounds/collect.wav");
 		}else if (object instanceof E_Spacemine spacemineEntity) {
 			spacemineEntity.setVisible(false);
