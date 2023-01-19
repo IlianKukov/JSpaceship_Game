@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="lwjgl">
+    <archive path="C:/000.App_Dev/0. Projects/JSpaceship/libs/lwjgl.jar" />
+  </library>
+  <library name="lwjgl_util">
+    <archive path="C:/000.App_Dev/0. Projects/JSpaceship/libs/lwjgl_util.jar" />
+  </library>
+  <library name="slick">
+    <archive path="C:/000.App_Dev/0. Projects/JSpaceship/libs/slick.jar" />
+  </library>
+</eclipse-userlibraries>
+

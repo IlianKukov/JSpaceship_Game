@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inherit-compiler-output="true" inheritJdk="true">
+	<output-test url="file://$MODULE_DIR$/out/test/JSpaceship"/>
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$"/>
+	<levels>
+		<level name="lwjgl" value="project"/>
+		<level name="lwjgl_util" value="project"/>
+		<level name="slick" value="project"/>
+	</levels>
+</component>
