@@ -8,18 +8,14 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.openal.Audio;
-import org.newdawn.slick.openal.AudioLoader;
-import org.newdawn.slick.openal.SoundStore;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
-
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -31,11 +27,12 @@ public class Game {
 	private static final int MAX_LEVEL = 1; // Max Levels count
 	private boolean finished; // exit game boolean
 	private boolean soundplay = true;
+	private boolean pause = false;
 	private int extender=3; // exit game boolean
 	private final E_Background[] levelTile = new E_Background[MAX_LEVEL];
 	private ArrayList<E_Entity> entities;
 	private ArrayList<E_Entity> mines;
-	private ArrayDeque<E_Entity> lives;
+	private ArrayList<E_Entity> lives;
 	private E_Spaceship heroEntity;
 	private E_Spacemine spacemineEntity;
 	private int currentLevel = 1;
@@ -48,12 +45,15 @@ public class Game {
 	public static void main(String[] args) {
 		Game myGame = new Game();
 		myGame.start();
+
 	}
 	// Error Catcher
 	public void start() {
 		try {
 			init();
 			run();
+
+
 		} catch (Exception e) {
 			e.printStackTrace(System.err);
 			Sys.alert(GAME_TITLE, "An error occured and the game will exit.");
@@ -105,7 +105,7 @@ public class Game {
 	private void initTextures() throws IOException { // Init Sprites
 		entities = new ArrayList<E_Entity>();
 		mines = new ArrayList<E_Entity>();
-		lives = new ArrayDeque<E_Entity>();
+		lives = new ArrayList<E_Entity>();
 
 		Texture texture;
 
@@ -142,16 +142,17 @@ public class Game {
 		E_Lives livesEntity1 = new E_Lives(new E_MySprite(texture),750, 10);
 		E_Lives livesEntity2 = new E_Lives(new E_MySprite(texture),700, 10);
 		E_Lives livesEntity3 = new E_Lives(new E_MySprite(texture),650, 10);
-		lives.push(livesEntity1);
-		lives.push(livesEntity2);
-		lives.push(livesEntity3);
+		lives.add(livesEntity1);
+		lives.add(livesEntity2);
+		lives.add(livesEntity3);
+		sound("sounds/gamestart.wav");
 
 	}
 
 
 
 	private void run() { // Initialize game loop
-		while (!finished) {
+		while (!finished && !pause) {
 
 			Display.update(); // Always call Window.update(), all the time
 			if (Display.isCloseRequested()) { // Check for O/S close requests
@@ -186,10 +187,16 @@ public class Game {
 		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 			finished = true;
 		}
-
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-			//finished = true;
+
 		}
+
+		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && !pause) {
+			pause = true;
+		} else if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && pause) {
+			pause = false;
+		}
+
 
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
@@ -219,7 +226,9 @@ public class Game {
 		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 			if (heroEntity.getY() > 0) {
 				heroEntity.setY(heroEntity.getY() - 10);
+
 			}
+
 
 		}
 
@@ -227,7 +236,7 @@ public class Game {
 			if (heroEntity.getY() + heroEntity.getHeight() < Display
 					.getDisplayMode().getHeight()) {
 				heroEntity.setY(heroEntity.getY() + 10);
-
+				sound("sounds/jumpdown.wav");
 			}
 		}
 
@@ -295,12 +304,6 @@ public class Game {
 			if (extender>0){ // Extends the game 3 more loops to be able to draw the lost lives
 				extender--;
 			}
-//			else {
-//				// exit the game loop if Lives are 0
-//				finished = true;
-////				String st = "Game over! You have collected " + treasuresCollected + " Donuts";
-////				JOptionPane.showMessageDialog(null, st);
-//			}
 		}
 
 
@@ -350,6 +353,7 @@ public class Game {
 			}
 			sound("sounds/donut.wav");
 
+
 		}
 
 	}
@@ -385,17 +389,20 @@ public class Game {
 				}
 			}
 
-			if (lives != null) {
-				for (E_Entity entity : lives) {
-					if (entity.isVisible()) {
-						entity.draw();
-					}
-				}
+			if (livesRemaining==3){
+				lives.get(0).draw();
+				lives.get(1).draw();
+				lives.get(2).draw();
+			}else if (livesRemaining==2){
+				lives.get(0).draw();
+				lives.get(1).draw();
+			}else if (livesRemaining==1){
+				lives.get(0).draw();
 			}
 
 			heroEntity.draw();
 			font.drawString(10, 10, "Score " + treasuresCollected, Color.white);
-			font.drawString(SCREEN_SIZE_WIDTH-335, 10, "Lives remaining " + livesRemaining, Color.white);
+			//font.drawString(SCREEN_SIZE_WIDTH-335, 10, "Lives remaining " + livesRemaining, Color.white);
 		}else {
 
 			if (soundplay){
@@ -432,15 +439,13 @@ public class Game {
 			treasuresCollected = treasuresCollected + 100;
 			if (treasuresCollected%1000==0 && livesRemaining<3){
 				livesRemaining++;
+				sound("sounds/addlife.wav");
 			}
 			sound("sounds/collect.wav");
 		}else if (object instanceof E_Spacemine spacemineEntity) {
 			spacemineEntity.setVisible(false);
 			mines.remove(spacemineEntity);
 			livesRemaining--;
-			if(lives.size()>0){
-			  lives.pop();
-			}
 			sound("sounds/enemyhit.wav");
 
 		}
