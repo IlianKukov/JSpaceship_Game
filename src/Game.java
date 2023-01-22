@@ -412,6 +412,7 @@ public class Game {
 
 			String st = "Game over! You Score is " + treasuresCollected ;
 			font.drawString(230, 250, st, Color.white);
+
 		}
 
 
