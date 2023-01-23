@@ -404,7 +404,6 @@ public class Game {
 			font.drawString(10, 10, "Score " + treasuresCollected, Color.white);
 			//font.drawString(SCREEN_SIZE_WIDTH-335, 10, "Lives remaining " + livesRemaining, Color.white);
 		}else {
-
 			if (soundplay){
 				sound("sounds/gameover.wav");
 				soundplay=false;
