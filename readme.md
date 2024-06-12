@@ -1,5 +1,5 @@
 Game Description:
-#Enjoy fetching donuts in space with your spaceship 🍩🤤
+#Enjoy fetching donuts🍩 in space with your spaceship🚀 Beware of the mines!🧨
 
 Used Images and sounds:
 
