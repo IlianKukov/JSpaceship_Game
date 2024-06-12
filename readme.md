@@ -1,3 +1,6 @@
+Game Description:
+#Enjoy fetching donuts in space with your spaceship 🍩🤤
+
 Used Images and sounds:
 
 https://pixabay.com/illustrations/ufo-alien-spaceship-space-science-3157268/ - spaceship
